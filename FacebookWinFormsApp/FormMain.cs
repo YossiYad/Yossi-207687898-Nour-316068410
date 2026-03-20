@@ -21,6 +21,8 @@ namespace BasicFacebookFeatures
 
         FacebookWrapper.LoginResult m_LoginResult;
 
+        private FriendsAnalyzer m_friendAnalyzer; //ADDED
+
         private void buttonLogin_Click(object sender, EventArgs e)
         {
             Clipboard.SetText("design.patterns");
@@ -38,8 +40,10 @@ namespace BasicFacebookFeatures
                 textBoxAppID.Text,
                 /// requested permissions:
                 "email",
-                "public_profile"
-                /// add any relevant permissions
+                "public_profile",
+                "user_photos", //ADDED for the photos archive
+                "user_posts", //ADDED to read and check likes and comments of friends
+                "user_friends" //ADDED to take out the friends list
                 );
 
             if (string.IsNullOrEmpty(m_LoginResult.ErrorMessage))
@@ -47,7 +51,6 @@ namespace BasicFacebookFeatures
                 afterLogin();
             }
         }
-
 
         private void buttonConnectAsDesig_Click(object sender, EventArgs e)
         {
@@ -71,6 +74,8 @@ namespace BasicFacebookFeatures
             pictureBoxProfile.ImageLocation = m_LoginResult.LoggedInUser.PictureNormalURL;
             buttonLogin.Enabled = false;
             buttonLogout.Enabled = true;
+
+            m_friendAnalyzer = new FriendsAnalyzer(m_LoginResult.LoggedInUser); //ADDED
         }
 
         private void buttonLogout_Click(object sender, EventArgs e)
@@ -81,6 +86,131 @@ namespace BasicFacebookFeatures
             m_LoginResult = null;
             buttonLogin.Enabled = true;
             buttonLogout.Enabled = false;
+            m_friendAnalyzer = null; //ADDED
+            pictureBoxProfile.Image = null; //ADDED
+        }
+
+        private void buttonFindActiveFriends_Click(object sender, EventArgs e)
+        {
+            if (m_friendAnalyzer == null)
+            {
+                MessageBox.Show("Please login first");
+                return;
+            }
+
+            if (!m_friendAnalyzer.IsAnalyzed)
+            {
+                labelStatus.Text = "Status: Analyzing Facebook data...";
+                labelStatus.ForeColor = Color.AliceBlue;
+            }
+            else
+            {
+                labelStatus.Text = "Status: Fetching data from memory...";
+                labelStatus.ForeColor = Color.Green;
+            }
+
+            buttonFindActiveFriends.Enabled = false;
+            listBoxFriends.Items.Clear();
+
+            new System.Threading.Thread(() =>
+            {
+                try
+                {
+                    List<User> topActiveFriends = m_friendAnalyzer.getActiveFriends(10);
+
+                    listBoxFriends.Invoke(new Action(() =>
+                    {
+                        listBoxFriends.DisplayMember = "Name";
+                        foreach (User friend in topActiveFriends)
+                        {
+                            listBoxFriends.Items.Add(friend);
+                        }
+                        labelStatus.Text = "Status: Analysis Complete";
+                        labelStatus.ForeColor = Color.Green;
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred: " + ex.Message);
+                }
+                finally
+                {
+                    buttonFindActiveFriends.Invoke(new Action(() =>
+                    {
+                        buttonFindActiveFriends.Enabled = true;
+                    }));
+                }
+            }).Start();
+        }
+
+        private void buttonFindGhostFriends_Click(object sender, EventArgs e)
+        {
+            if (m_friendAnalyzer == null) return;
+
+            labelStatus.Text = "Status: Searching for ghosts...";
+            labelStatus.ForeColor = Color.Blue;
+            buttonFindGhostFriends.Enabled = false;
+            listBoxFriends.Items.Clear();
+
+            new System.Threading.Thread(() =>
+            {
+                try
+                {
+                    List<User> ghostFriends = m_friendAnalyzer.getGhostFriends();
+
+                    listBoxFriends.Invoke(new Action(() =>
+                    {
+                        listBoxFriends.DisplayMember = "Name";
+                        foreach (User friend in ghostFriends)
+                        {
+                            listBoxFriends.Items.Add(friend);
+                        }
+                        labelStatus.Text = "Status: Found " + ghostFriends.Count + " ghosts.";
+                        labelStatus.ForeColor = Color.Green;
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred: " + ex.Message);
+                }
+                finally
+                {
+                    buttonFindGhostFriends.Invoke(new Action(() =>
+                    {
+                        buttonFindGhostFriends.Enabled = true;
+                    }));
+                }
+            }).Start();
+        }
+
+        private void buttonReset_Click(object sender, EventArgs e)
+        {
+            if (m_friendAnalyzer != null)
+            {
+                m_friendAnalyzer.ResetAnalyzer();
+                listBoxFriends.Items.Clear();
+                pictureBoxFriend.Image = null;
+
+                labelStatus.Text = "Status: Waiting for scan";
+                labelStatus.ForeColor = Color.Black;
+
+                MessageBox.Show("Data reset successfully!");
+            }
+        }
+
+        private void listBoxFriends_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBoxFriends.SelectedItem is User selectedFriend)
+            {
+                if (selectedFriend.PictureNormalURL != null)
+                {
+                    pictureBoxFriend.LoadAsync(selectedFriend.PictureNormalURL);
+                }
+                else
+                {
+                    pictureBoxFriend.Image = null;
+                }
+            }
         }
     }
 }

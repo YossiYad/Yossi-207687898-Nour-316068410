@@ -33,13 +33,21 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.buttonConnectAsDesig = new System.Windows.Forms.Button();
             this.pictureBoxProfile = new System.Windows.Forms.PictureBox();
             this.textBoxAppID = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.buttonConnectAsDesig = new System.Windows.Forms.Button();
+            this.labelStatus = new System.Windows.Forms.Label();
+            this.buttonReset = new System.Windows.Forms.Button();
+            this.buttonFindGhostFriends = new System.Windows.Forms.Button();
+            this.pictureBoxFriend = new System.Windows.Forms.PictureBox();
+            this.listBoxFriends = new System.Windows.Forms.ListBox();
+            this.buttonFindActiveFriends = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).BeginInit();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFriend)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonLogin
@@ -71,7 +79,7 @@
             this.label1.Location = new System.Drawing.Point(314, 17);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(465, 78);
+            this.label1.Size = new System.Drawing.Size(397, 72);
             this.label1.TabIndex = 53;
             this.label1.Text = "This is the AppID of \"Design Patterns App 2.4\".\r\nThe grader will use it to test y" +
     "our app.\r\nType here your own AppID to test it:\r\n";
@@ -95,13 +103,24 @@
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.buttonLogout);
             this.tabPage1.Controls.Add(this.buttonLogin);
-            this.tabPage1.Location = new System.Drawing.Point(4, 35);
+            this.tabPage1.Location = new System.Drawing.Point(4, 31);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(854, 331);
+            this.tabPage1.Size = new System.Drawing.Size(854, 335);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // buttonConnectAsDesig
+            // 
+            this.buttonConnectAsDesig.Location = new System.Drawing.Point(18, 69);
+            this.buttonConnectAsDesig.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonConnectAsDesig.Name = "buttonConnectAsDesig";
+            this.buttonConnectAsDesig.Size = new System.Drawing.Size(268, 44);
+            this.buttonConnectAsDesig.TabIndex = 56;
+            this.buttonConnectAsDesig.Text = "Connect As Desig";
+            this.buttonConnectAsDesig.UseVisualStyleBackColor = true;
+            this.buttonConnectAsDesig.Click += new System.EventHandler(this.buttonConnectAsDesig_Click);
             // 
             // pictureBoxProfile
             // 
@@ -116,34 +135,87 @@
             // 
             this.textBoxAppID.Location = new System.Drawing.Point(319, 126);
             this.textBoxAppID.Name = "textBoxAppID";
-            this.textBoxAppID.Size = new System.Drawing.Size(446, 32);
+            this.textBoxAppID.Size = new System.Drawing.Size(446, 28);
             this.textBoxAppID.TabIndex = 54;
             this.textBoxAppID.Text = "1450160541956417";
             // 
             // tabPage2
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 35);
+            this.tabPage2.Controls.Add(this.labelStatus);
+            this.tabPage2.Controls.Add(this.buttonReset);
+            this.tabPage2.Controls.Add(this.buttonFindGhostFriends);
+            this.tabPage2.Controls.Add(this.pictureBoxFriend);
+            this.tabPage2.Controls.Add(this.listBoxFriends);
+            this.tabPage2.Controls.Add(this.buttonFindActiveFriends);
+            this.tabPage2.Location = new System.Drawing.Point(4, 31);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(752, 327);
+            this.tabPage2.Size = new System.Drawing.Size(854, 335);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.Text = "Friends Analyzer";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // buttonConnectAsDesig
+            // labelStatus
             // 
-            this.buttonConnectAsDesig.Location = new System.Drawing.Point(18, 69);
-            this.buttonConnectAsDesig.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonConnectAsDesig.Name = "buttonConnectAsDesig";
-            this.buttonConnectAsDesig.Size = new System.Drawing.Size(268, 44);
-            this.buttonConnectAsDesig.TabIndex = 56;
-            this.buttonConnectAsDesig.Text = "Connect As Desig";
-            this.buttonConnectAsDesig.UseVisualStyleBackColor = true;
-            this.buttonConnectAsDesig.Click += new System.EventHandler(this.buttonConnectAsDesig_Click);
+            this.labelStatus.AutoSize = true;
+            this.labelStatus.Location = new System.Drawing.Point(59, 277);
+            this.labelStatus.Name = "labelStatus";
+            this.labelStatus.Size = new System.Drawing.Size(203, 24);
+            this.labelStatus.TabIndex = 5;
+            this.labelStatus.Text = "Status: Waiting for scan";
+            // 
+            // buttonReset
+            // 
+            this.buttonReset.Location = new System.Drawing.Point(39, 206);
+            this.buttonReset.Name = "buttonReset";
+            this.buttonReset.Size = new System.Drawing.Size(223, 41);
+            this.buttonReset.TabIndex = 4;
+            this.buttonReset.Text = "Reset";
+            this.buttonReset.UseVisualStyleBackColor = true;
+            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
+            // 
+            // buttonFindGhostFriends
+            // 
+            this.buttonFindGhostFriends.Location = new System.Drawing.Point(39, 135);
+            this.buttonFindGhostFriends.Name = "buttonFindGhostFriends";
+            this.buttonFindGhostFriends.Size = new System.Drawing.Size(223, 42);
+            this.buttonFindGhostFriends.TabIndex = 3;
+            this.buttonFindGhostFriends.Text = "Find Ghost Friends";
+            this.buttonFindGhostFriends.UseVisualStyleBackColor = true;
+            this.buttonFindGhostFriends.Click += new System.EventHandler(this.buttonFindGhostFriends_Click);
+            // 
+            // pictureBoxFriend
+            // 
+            this.pictureBoxFriend.Location = new System.Drawing.Point(615, 67);
+            this.pictureBoxFriend.Name = "pictureBoxFriend";
+            this.pictureBoxFriend.Size = new System.Drawing.Size(100, 86);
+            this.pictureBoxFriend.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxFriend.TabIndex = 2;
+            this.pictureBoxFriend.TabStop = false;
+            // 
+            // listBoxFriends
+            // 
+            this.listBoxFriends.FormattingEnabled = true;
+            this.listBoxFriends.ItemHeight = 22;
+            this.listBoxFriends.Location = new System.Drawing.Point(385, 67);
+            this.listBoxFriends.Name = "listBoxFriends";
+            this.listBoxFriends.Size = new System.Drawing.Size(223, 202);
+            this.listBoxFriends.TabIndex = 1;
+            this.listBoxFriends.SelectedIndexChanged += new System.EventHandler(this.listBoxFriends_SelectedIndexChanged);
+            // 
+            // buttonFindActiveFriends
+            // 
+            this.buttonFindActiveFriends.Location = new System.Drawing.Point(39, 67);
+            this.buttonFindActiveFriends.Name = "buttonFindActiveFriends";
+            this.buttonFindActiveFriends.Size = new System.Drawing.Size(223, 43);
+            this.buttonFindActiveFriends.TabIndex = 0;
+            this.buttonFindActiveFriends.Text = "Find Active Friends";
+            this.buttonFindActiveFriends.UseVisualStyleBackColor = true;
+            this.buttonFindActiveFriends.Click += new System.EventHandler(this.buttonFindActiveFriends_Click);
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 26F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(862, 370);
             this.Controls.Add(this.tabControl1);
@@ -156,6 +228,9 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFriend)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -171,6 +246,12 @@
         private System.Windows.Forms.TextBox textBoxAppID;
         private System.Windows.Forms.PictureBox pictureBoxProfile;
         private System.Windows.Forms.Button buttonConnectAsDesig;
+        private System.Windows.Forms.Button buttonFindActiveFriends;
+        private System.Windows.Forms.Button buttonFindGhostFriends;
+        private System.Windows.Forms.PictureBox pictureBoxFriend;
+        private System.Windows.Forms.ListBox listBoxFriends;
+        private System.Windows.Forms.Label labelStatus;
+        private System.Windows.Forms.Button buttonReset;
     }
 }
 
