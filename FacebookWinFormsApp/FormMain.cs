@@ -16,12 +16,13 @@ namespace BasicFacebookFeatures
         public FormMain()
         {
             InitializeComponent();
-            FacebookWrapper.FacebookService.s_CollectionLimit = 25;
+            FacebookWrapper.FacebookService.s_CollectionLimit = 200;
         }
 
+        User m_LoggedInUser;
         FacebookWrapper.LoginResult m_LoginResult;
 
-        private FriendsAnalyzer m_friendAnalyzer; //ADDED
+        private FriendsAnalyzer m_friendAnalyzer;
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
@@ -41,9 +42,9 @@ namespace BasicFacebookFeatures
                 /// requested permissions:
                 "email",
                 "public_profile",
-                "user_photos", //ADDED for the photos archive
-                "user_posts", //ADDED to read and check likes and comments of friends
-                "user_friends" //ADDED to take out the friends list
+                "user_photos", 
+                "user_posts", 
+                "user_friends" 
                 );
 
             if (string.IsNullOrEmpty(m_LoginResult.ErrorMessage))
@@ -56,26 +57,30 @@ namespace BasicFacebookFeatures
         {
             try
             {
-                m_LoginResult = FacebookService.Connect("EAAUm6cZC4eUEBQTAa3rRgO39UZCIJLeD9OpF5SYAevqSaFI16sfjT6JznpAUbyX5Soyj4Uv2ZBRkesoHO9omNcJ3KSYPZCExgaKrIprACUMIVnhiHzT5a46zbdC2VkvZC04n1ZARj8WmvOCYyuIdmRZBNjtWZCFJrbjFoms5t3sU8G9dO1xDCYH7kkfU67heIUZCFDIuTtL0CzF2JUHBpRpwPdXYilOJW811z3C5fY9TOyBiUwZAqx4ZAV6YS5ZBBtYKdsb7");
+                m_LoginResult = FacebookService.Connect("EAAUm6cZC4eUEBQ89SIPgqvUNRPYwshVbzNFtykREi0CbEUsssHsY0ceBnLKHx9uOtmH5ClGksE6EzWZBRylGglQToWaaqV2QWsOcus79byyncz93TDesQvzX2pv2kllZA8mEg5iDMiYktoptWXySLSrS4Y2ATeDyEEFsJLZBmyshcy464jImETOhjyGYYKxJDZBWhxzRWLsRZApkMmJiEG742LGjEq486o9RgdhFrkuTLT0xup5efuMsJNL8ENsJqZC");
 
                 afterLogin();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(m_LoginResult.ErrorMessage, "Login Failed");
+                MessageBox.Show(ex.Message, "Login Failed");
             }
         }
 
         private void afterLogin()
         {
+            m_LoggedInUser = m_LoginResult.LoggedInUser;
 
             buttonLogin.Text = $"Logged in as {m_LoginResult.LoggedInUser.Name}";
             buttonLogin.BackColor = Color.LightGreen;
-            pictureBoxProfile.ImageLocation = m_LoginResult.LoggedInUser.PictureNormalURL;
             buttonLogin.Enabled = false;
             buttonLogout.Enabled = true;
 
-            m_friendAnalyzer = new FriendsAnalyzer(m_LoginResult.LoggedInUser); //ADDED
+            //pictureBoxProfile.ImageLocation = m_LoginResult.LoggedInUser.PictureNormalURL;
+            pictureBoxProfile.LoadAsync(m_LoggedInUser.PictureNormalURL);
+            this.Text = $"Logged in as {m_LoggedInUser.Name}";
+
+            m_friendAnalyzer = new FriendsAnalyzer(m_LoggedInUser); 
         }
 
         private void buttonLogout_Click(object sender, EventArgs e)
@@ -86,8 +91,8 @@ namespace BasicFacebookFeatures
             m_LoginResult = null;
             buttonLogin.Enabled = true;
             buttonLogout.Enabled = false;
-            m_friendAnalyzer = null; //ADDED
-            pictureBoxProfile.Image = null; //ADDED
+            m_friendAnalyzer = null; 
+            pictureBoxProfile.Image = null;
         }
 
         private void buttonFindActiveFriends_Click(object sender, EventArgs e)
@@ -116,7 +121,7 @@ namespace BasicFacebookFeatures
             {
                 try
                 {
-                    List<User> topActiveFriends = m_friendAnalyzer.getActiveFriends(10);
+                    List<User> topActiveFriends = m_friendAnalyzer.GetActiveFriends(10);
 
                     listBoxFriends.Invoke(new Action(() =>
                     {
@@ -156,7 +161,7 @@ namespace BasicFacebookFeatures
             {
                 try
                 {
-                    List<User> ghostFriends = m_friendAnalyzer.getGhostFriends();
+                    List<User> ghostFriends = m_friendAnalyzer.GetGhostFriends();
 
                     listBoxFriends.Invoke(new Action(() =>
                     {

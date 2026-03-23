@@ -44,8 +44,9 @@ namespace BasicFacebookFeatures
             {
                 foreach (Photo photo in i_Photos)
                 {
-                    string photoUrl = photo.PictureURL;
-                    string fileName = string.Format("{0}_{1}.jpg", photo.Id, photo.CreatedTime.ToString("yyyyMMdd_HHmmss"));
+                    //string photoUrl = photo.PictureURL;
+                    string photoUrl = photo.PictureNormalURL; // fixed
+                    string fileName = string.Format("{0}_{1}.jpg", photo.Id, photo.CreatedTime.Value.ToString("yyyyMMdd_HHmmss")); //i added the word Value
                     string fullPath = Path.Combine(i_DestinationPath, fileName);
                     
                     try
@@ -58,12 +59,12 @@ namespace BasicFacebookFeatures
                     }
                     
                     currentPhotoIndex++;
-                    OnProgressChanged(currentPhotoIndex, totalPhotos);
+                    onProgressChanged(currentPhotoIndex, totalPhotos);
                 }
             }
         }
 
-        private void OnProgressChanged(int i_Current, int i_Total)
+        private void onProgressChanged(int i_Current, int i_Total)
         { 
                 ProgressChanged?.Invoke(i_Current, i_Total);
         }

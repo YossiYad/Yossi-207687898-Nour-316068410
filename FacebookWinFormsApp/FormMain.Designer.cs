@@ -32,21 +32,22 @@
             this.buttonLogout = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabAuthentication = new System.Windows.Forms.TabPage();
             this.buttonConnectAsDesig = new System.Windows.Forms.Button();
             this.pictureBoxProfile = new System.Windows.Forms.PictureBox();
             this.textBoxAppID = new System.Windows.Forms.TextBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabFriendsAnalyzer = new System.Windows.Forms.TabPage();
             this.labelStatus = new System.Windows.Forms.Label();
             this.buttonReset = new System.Windows.Forms.Button();
             this.buttonFindGhostFriends = new System.Windows.Forms.Button();
             this.pictureBoxFriend = new System.Windows.Forms.PictureBox();
             this.listBoxFriends = new System.Windows.Forms.ListBox();
             this.buttonFindActiveFriends = new System.Windows.Forms.Button();
+            this.tabPicturesArchive = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tabAuthentication.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).BeginInit();
-            this.tabPage2.SuspendLayout();
+            this.tabFriendsAnalyzer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFriend)).BeginInit();
             this.SuspendLayout();
             // 
@@ -86,8 +87,9 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabAuthentication);
+            this.tabControl1.Controls.Add(this.tabFriendsAnalyzer);
+            this.tabControl1.Controls.Add(this.tabPicturesArchive);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -95,21 +97,21 @@
             this.tabControl1.Size = new System.Drawing.Size(862, 370);
             this.tabControl1.TabIndex = 54;
             // 
-            // tabPage1
+            // tabAuthentication
             // 
-            this.tabPage1.Controls.Add(this.buttonConnectAsDesig);
-            this.tabPage1.Controls.Add(this.pictureBoxProfile);
-            this.tabPage1.Controls.Add(this.textBoxAppID);
-            this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Controls.Add(this.buttonLogout);
-            this.tabPage1.Controls.Add(this.buttonLogin);
-            this.tabPage1.Location = new System.Drawing.Point(4, 31);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(854, 335);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabAuthentication.Controls.Add(this.buttonConnectAsDesig);
+            this.tabAuthentication.Controls.Add(this.pictureBoxProfile);
+            this.tabAuthentication.Controls.Add(this.textBoxAppID);
+            this.tabAuthentication.Controls.Add(this.label1);
+            this.tabAuthentication.Controls.Add(this.buttonLogout);
+            this.tabAuthentication.Controls.Add(this.buttonLogin);
+            this.tabAuthentication.Location = new System.Drawing.Point(4, 31);
+            this.tabAuthentication.Name = "tabAuthentication";
+            this.tabAuthentication.Padding = new System.Windows.Forms.Padding(3);
+            this.tabAuthentication.Size = new System.Drawing.Size(854, 335);
+            this.tabAuthentication.TabIndex = 0;
+            this.tabAuthentication.Text = "Authentication";
+            this.tabAuthentication.UseVisualStyleBackColor = true;
             // 
             // buttonConnectAsDesig
             // 
@@ -139,21 +141,21 @@
             this.textBoxAppID.TabIndex = 54;
             this.textBoxAppID.Text = "1450160541956417";
             // 
-            // tabPage2
+            // tabFriendsAnalyzer
             // 
-            this.tabPage2.Controls.Add(this.labelStatus);
-            this.tabPage2.Controls.Add(this.buttonReset);
-            this.tabPage2.Controls.Add(this.buttonFindGhostFriends);
-            this.tabPage2.Controls.Add(this.pictureBoxFriend);
-            this.tabPage2.Controls.Add(this.listBoxFriends);
-            this.tabPage2.Controls.Add(this.buttonFindActiveFriends);
-            this.tabPage2.Location = new System.Drawing.Point(4, 31);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(854, 335);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Friends Analyzer";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabFriendsAnalyzer.Controls.Add(this.labelStatus);
+            this.tabFriendsAnalyzer.Controls.Add(this.buttonReset);
+            this.tabFriendsAnalyzer.Controls.Add(this.buttonFindGhostFriends);
+            this.tabFriendsAnalyzer.Controls.Add(this.pictureBoxFriend);
+            this.tabFriendsAnalyzer.Controls.Add(this.listBoxFriends);
+            this.tabFriendsAnalyzer.Controls.Add(this.buttonFindActiveFriends);
+            this.tabFriendsAnalyzer.Location = new System.Drawing.Point(4, 31);
+            this.tabFriendsAnalyzer.Name = "tabFriendsAnalyzer";
+            this.tabFriendsAnalyzer.Padding = new System.Windows.Forms.Padding(3);
+            this.tabFriendsAnalyzer.Size = new System.Drawing.Size(854, 335);
+            this.tabFriendsAnalyzer.TabIndex = 1;
+            this.tabFriendsAnalyzer.Text = "Friends Analyzer";
+            this.tabFriendsAnalyzer.UseVisualStyleBackColor = true;
             // 
             // labelStatus
             // 
@@ -213,6 +215,16 @@
             this.buttonFindActiveFriends.UseVisualStyleBackColor = true;
             this.buttonFindActiveFriends.Click += new System.EventHandler(this.buttonFindActiveFriends_Click);
             // 
+            // tabPicturesArchive
+            // 
+            this.tabPicturesArchive.Location = new System.Drawing.Point(4, 31);
+            this.tabPicturesArchive.Name = "tabPicturesArchive";
+            this.tabPicturesArchive.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPicturesArchive.Size = new System.Drawing.Size(854, 335);
+            this.tabPicturesArchive.TabIndex = 2;
+            this.tabPicturesArchive.Text = "Pictures Archive";
+            this.tabPicturesArchive.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
@@ -225,11 +237,11 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.tabAuthentication.ResumeLayout(false);
+            this.tabAuthentication.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).EndInit();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            this.tabFriendsAnalyzer.ResumeLayout(false);
+            this.tabFriendsAnalyzer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFriend)).EndInit();
             this.ResumeLayout(false);
 
@@ -241,8 +253,8 @@
 		private System.Windows.Forms.Button buttonLogout;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TabControl tabControl1;
-		private System.Windows.Forms.TabPage tabPage1;
-		private System.Windows.Forms.TabPage tabPage2;
+		private System.Windows.Forms.TabPage tabAuthentication;
+		private System.Windows.Forms.TabPage tabFriendsAnalyzer;
         private System.Windows.Forms.TextBox textBoxAppID;
         private System.Windows.Forms.PictureBox pictureBoxProfile;
         private System.Windows.Forms.Button buttonConnectAsDesig;
@@ -252,6 +264,7 @@
         private System.Windows.Forms.ListBox listBoxFriends;
         private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.Button buttonReset;
+        private System.Windows.Forms.TabPage tabPicturesArchive;
     }
 }
 

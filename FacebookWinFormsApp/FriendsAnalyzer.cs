@@ -46,7 +46,7 @@ namespace BasicFacebookFeatures
             }
         }
 
-        public void analyzeInteractions()
+        public void AnalyzeInteractions()
         {
             if (m_IsAnalyzed)
             {
@@ -102,11 +102,11 @@ namespace BasicFacebookFeatures
             }
         }
 
-        public List<User> getGhostFriends()
+        public List<User> GetGhostFriends()
         {
             if (!m_IsAnalyzed)
             {
-                analyzeInteractions();
+                AnalyzeInteractions();
             }
 
             List<User> inactiveGhostFriends = new List<User>();
@@ -122,18 +122,12 @@ namespace BasicFacebookFeatures
             return inactiveGhostFriends;
         }
 
-        public List<User> getActiveFriends(int i_friendsAmount)
+        public List<User> GetActiveFriends(int i_friendsAmount)
         {
             if (!m_IsAnalyzed)
             {
-                analyzeInteractions();
+                AnalyzeInteractions();
             }
-
-            // List<User> topActiveFriends = m_FriendsPoints
-            //    .OrderByDescending(friend => friend.Value)
-            //     .Take(i_friendsAmount)
-            //     .Select(friend => friend.Key)
-            //    .ToList();
 
             List<KeyValuePair<User, int>> friendsPointList = new List<KeyValuePair<User, int>>(m_FriendsPoints);
             friendsPointList.Sort((firstFriend, secondFriend) => secondFriend.Value.CompareTo(firstFriend.Value));
