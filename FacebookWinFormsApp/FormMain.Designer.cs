@@ -45,10 +45,11 @@
             this.buttonFindActiveFriends = new System.Windows.Forms.Button();
             this.tabPhotoArchive = new System.Windows.Forms.TabPage();
             this.listBoxAlbums = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonMoveToArchive = new System.Windows.Forms.Button();
+            this.buttonDownloadAlbum = new System.Windows.Forms.Button();
             this.pictureBoxAlbumCover = new System.Windows.Forms.PictureBox();
             this.buttonLoadAlbums = new System.Windows.Forms.Button();
+            this.numericUpDownYears = new System.Windows.Forms.NumericUpDown();
             this.tabControl1.SuspendLayout();
             this.tabAuthentication.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).BeginInit();
@@ -56,6 +57,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFriend)).BeginInit();
             this.tabPhotoArchive.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAlbumCover)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownYears)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonLogin
@@ -87,7 +89,7 @@
             this.label1.Location = new System.Drawing.Point(314, 17);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(311, 54);
+            this.label1.Size = new System.Drawing.Size(397, 72);
             this.label1.TabIndex = 53;
             this.label1.Text = "This is the AppID of \"Design Patterns App 2.4\".\r\nThe grader will use it to test y" +
     "our app.\r\nType here your own AppID to test it:\r\n";
@@ -112,10 +114,10 @@
             this.tabAuthentication.Controls.Add(this.label1);
             this.tabAuthentication.Controls.Add(this.buttonLogout);
             this.tabAuthentication.Controls.Add(this.buttonLogin);
-            this.tabAuthentication.Location = new System.Drawing.Point(4, 27);
+            this.tabAuthentication.Location = new System.Drawing.Point(4, 31);
             this.tabAuthentication.Name = "tabAuthentication";
             this.tabAuthentication.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAuthentication.Size = new System.Drawing.Size(854, 339);
+            this.tabAuthentication.Size = new System.Drawing.Size(854, 335);
             this.tabAuthentication.TabIndex = 0;
             this.tabAuthentication.Text = "Authentication";
             this.tabAuthentication.UseVisualStyleBackColor = true;
@@ -144,7 +146,7 @@
             // 
             this.textBoxAppID.Location = new System.Drawing.Point(319, 126);
             this.textBoxAppID.Name = "textBoxAppID";
-            this.textBoxAppID.Size = new System.Drawing.Size(446, 24);
+            this.textBoxAppID.Size = new System.Drawing.Size(446, 28);
             this.textBoxAppID.TabIndex = 54;
             this.textBoxAppID.Text = "1450160541956417";
             // 
@@ -156,10 +158,10 @@
             this.tabFriendsAnalyzer.Controls.Add(this.pictureBoxFriend);
             this.tabFriendsAnalyzer.Controls.Add(this.listBoxFriends);
             this.tabFriendsAnalyzer.Controls.Add(this.buttonFindActiveFriends);
-            this.tabFriendsAnalyzer.Location = new System.Drawing.Point(4, 27);
+            this.tabFriendsAnalyzer.Location = new System.Drawing.Point(4, 31);
             this.tabFriendsAnalyzer.Name = "tabFriendsAnalyzer";
             this.tabFriendsAnalyzer.Padding = new System.Windows.Forms.Padding(3);
-            this.tabFriendsAnalyzer.Size = new System.Drawing.Size(854, 339);
+            this.tabFriendsAnalyzer.Size = new System.Drawing.Size(854, 335);
             this.tabFriendsAnalyzer.TabIndex = 1;
             this.tabFriendsAnalyzer.Text = "Friends Analyzer";
             this.tabFriendsAnalyzer.UseVisualStyleBackColor = true;
@@ -169,7 +171,7 @@
             this.labelStatus.AutoSize = true;
             this.labelStatus.Location = new System.Drawing.Point(59, 277);
             this.labelStatus.Name = "labelStatus";
-            this.labelStatus.Size = new System.Drawing.Size(165, 18);
+            this.labelStatus.Size = new System.Drawing.Size(203, 24);
             this.labelStatus.TabIndex = 5;
             this.labelStatus.Text = "Status: Waiting for scan";
             // 
@@ -205,7 +207,7 @@
             // listBoxFriends
             // 
             this.listBoxFriends.FormattingEnabled = true;
-            this.listBoxFriends.ItemHeight = 18;
+            this.listBoxFriends.ItemHeight = 22;
             this.listBoxFriends.Location = new System.Drawing.Point(385, 67);
             this.listBoxFriends.Name = "listBoxFriends";
             this.listBoxFriends.Size = new System.Drawing.Size(223, 202);
@@ -222,17 +224,18 @@
             this.buttonFindActiveFriends.UseVisualStyleBackColor = true;
             this.buttonFindActiveFriends.Click += new System.EventHandler(this.buttonFindActiveFriends_Click);
             // 
-            // tabPicturesArchive
+            // tabPhotoArchive
             // 
+            this.tabPhotoArchive.Controls.Add(this.numericUpDownYears);
             this.tabPhotoArchive.Controls.Add(this.listBoxAlbums);
-            this.tabPhotoArchive.Controls.Add(this.button1);
-            this.tabPhotoArchive.Controls.Add(this.button2);
+            this.tabPhotoArchive.Controls.Add(this.buttonMoveToArchive);
+            this.tabPhotoArchive.Controls.Add(this.buttonDownloadAlbum);
             this.tabPhotoArchive.Controls.Add(this.pictureBoxAlbumCover);
             this.tabPhotoArchive.Controls.Add(this.buttonLoadAlbums);
-            this.tabPhotoArchive.Location = new System.Drawing.Point(4, 27);
-            this.tabPhotoArchive.Name = "tabPicturesArchive";
+            this.tabPhotoArchive.Location = new System.Drawing.Point(4, 31);
+            this.tabPhotoArchive.Name = "tabPhotoArchive";
             this.tabPhotoArchive.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPhotoArchive.Size = new System.Drawing.Size(854, 339);
+            this.tabPhotoArchive.Size = new System.Drawing.Size(854, 335);
             this.tabPhotoArchive.TabIndex = 2;
             this.tabPhotoArchive.Text = "Photo Archive";
             this.tabPhotoArchive.UseVisualStyleBackColor = true;
@@ -240,29 +243,32 @@
             // listBoxAlbums
             // 
             this.listBoxAlbums.FormattingEnabled = true;
-            this.listBoxAlbums.ItemHeight = 18;
+            this.listBoxAlbums.ItemHeight = 22;
             this.listBoxAlbums.Location = new System.Drawing.Point(422, 76);
             this.listBoxAlbums.Name = "listBoxAlbums";
-            this.listBoxAlbums.Size = new System.Drawing.Size(186, 184);
+            this.listBoxAlbums.Size = new System.Drawing.Size(186, 180);
             this.listBoxAlbums.TabIndex = 12;
+            this.listBoxAlbums.SelectedIndexChanged += new System.EventHandler(this.listBoxAlbums_SelectedIndexChanged);
             // 
-            // button1
+            // buttonMoveToArchive
             // 
-            this.button1.Location = new System.Drawing.Point(38, 215);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(223, 41);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Move to archive";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonMoveToArchive.Location = new System.Drawing.Point(38, 215);
+            this.buttonMoveToArchive.Name = "buttonMoveToArchive";
+            this.buttonMoveToArchive.Size = new System.Drawing.Size(223, 41);
+            this.buttonMoveToArchive.TabIndex = 10;
+            this.buttonMoveToArchive.Text = "Move to archive";
+            this.buttonMoveToArchive.UseVisualStyleBackColor = true;
+            this.buttonMoveToArchive.Click += new System.EventHandler(this.buttonMoveToArchive_Click);
             // 
-            // button2
+            // buttonDownloadAlbum
             // 
-            this.button2.Location = new System.Drawing.Point(38, 144);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(223, 42);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "Download album";
-            this.button2.UseVisualStyleBackColor = true;
+            this.buttonDownloadAlbum.Location = new System.Drawing.Point(38, 144);
+            this.buttonDownloadAlbum.Name = "buttonDownloadAlbum";
+            this.buttonDownloadAlbum.Size = new System.Drawing.Size(223, 42);
+            this.buttonDownloadAlbum.TabIndex = 9;
+            this.buttonDownloadAlbum.Text = "Download album";
+            this.buttonDownloadAlbum.UseVisualStyleBackColor = true;
+            this.buttonDownloadAlbum.Click += new System.EventHandler(this.buttonDownloadAlbum_Click);
             // 
             // pictureBoxAlbumCover
             // 
@@ -283,9 +289,16 @@
             this.buttonLoadAlbums.UseVisualStyleBackColor = true;
             this.buttonLoadAlbums.Click += new System.EventHandler(this.buttonLoadAlbums_Click);
             // 
+            // numericUpDownYears
+            // 
+            this.numericUpDownYears.Location = new System.Drawing.Point(286, 222);
+            this.numericUpDownYears.Name = "numericUpDownYears";
+            this.numericUpDownYears.Size = new System.Drawing.Size(58, 28);
+            this.numericUpDownYears.TabIndex = 13;
+            // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(862, 370);
             this.Controls.Add(this.tabControl1);
@@ -303,6 +316,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFriend)).EndInit();
             this.tabPhotoArchive.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAlbumCover)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownYears)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -325,11 +339,12 @@
         private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.Button buttonReset;
         private System.Windows.Forms.TabPage tabPhotoArchive;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonMoveToArchive;
+        private System.Windows.Forms.Button buttonDownloadAlbum;
         private System.Windows.Forms.PictureBox pictureBoxAlbumCover;
         private System.Windows.Forms.Button buttonLoadAlbums;
         private System.Windows.Forms.ListBox listBoxAlbums;
+        private System.Windows.Forms.NumericUpDown numericUpDownYears;
     }
 }
 

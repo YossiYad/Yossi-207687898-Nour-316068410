@@ -25,7 +25,7 @@ namespace BasicFacebookFeatures
             {
                 foreach (Photo photo in album.Photos)
                 {
-                    if (photo.CreatedTime < limitDate)
+                    if (photo.CreatedTime != null && photo.CreatedTime < limitDate) // FIXED
                     {
                         oldPhotos.Add(photo);
                     }
@@ -43,26 +43,29 @@ namespace BasicFacebookFeatures
             {
                 foreach (Photo photo in i_Photos)
                 {
-                    string photoUrl = photo.PictureNormalURL;
-                    string fileName = string.Format("{0}_{1}.jpg", photo.Id, photo.CreatedTime.Value.ToString("yyyyMMdd_HHmmss"));
-                    string fullPath = Path.Combine(i_DestinationPath, fileName);
-                    
-                    try
+                    if (photo.CreatedTime != null && photo.PictureNormalURL != null) //ADDED 
                     {
-                        client.DownloadFile(photoUrl, fullPath);
+                        string photoUrl = photo.PictureNormalURL;
+                        string fileName = string.Format("{0}_{1}.jpg", photo.Id, photo.CreatedTime.Value.ToString("yyyyMMdd_HHmmss"));
+                        string fullPath = Path.Combine(i_DestinationPath, fileName);
+
+                        try
+                        {
+                            client.DownloadFile(photoUrl, fullPath);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error downloading photo {0}: {1}", photo.Id, ex.Message);
+                        }
+
+                        currentPhotoIndex++;
+                        OnProgressChanged(currentPhotoIndex, totalPhotos);
                     }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Error downloading photo {0}: {1}", photo.Id, ex.Message);
-                    }
-                    
-                    currentPhotoIndex++;
-                    onProgressChanged(currentPhotoIndex, totalPhotos);
                 }
             }
         }
 
-        private void onProgressChanged(int i_Current, int i_Total)
+        protected virtual void OnProgressChanged(int i_Current, int i_Total)
         { 
                 ProgressChanged?.Invoke(i_Current, i_Total);
         }

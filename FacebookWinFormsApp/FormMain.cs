@@ -73,14 +73,12 @@ namespace BasicFacebookFeatures
             m_LoggedInUser = m_LoginResult.LoggedInUser;
             
             m_PhotoArchiver = new PhotoArchiver(m_LoggedInUser);
-            m_PhotoArchiver.ProgressChanged += M_PhotoArchiver_ProgressChanged;
 
             buttonLogin.Text = $"Logged in as {m_LoginResult.LoggedInUser.Name}";
             buttonLogin.BackColor = Color.LightGreen;
             buttonLogin.Enabled = false;
             buttonLogout.Enabled = true;
 
-            //pictureBoxProfile.ImageLocation = m_LoginResult.LoggedInUser.PictureNormalURL;
             pictureBoxProfile.LoadAsync(m_LoggedInUser.PictureNormalURL);
             this.Text = $"Logged in as {m_LoggedInUser.Name}";
 
@@ -251,6 +249,103 @@ namespace BasicFacebookFeatures
                 {
                     pictureBoxAlbumCover.Image = null;
                 }
+            }
+        }
+
+        private void buttonDownloadAlbum_Click(object sender, EventArgs e)
+        {
+            if (listBoxAlbums.SelectedItem == null)
+            {
+                MessageBox.Show("Please select an album first");
+                return;
+            }
+
+            Album selectedAlbum = listBoxAlbums.SelectedItem as Album;
+            FolderBrowserDialog folderDialog = new FolderBrowserDialog();
+
+            if (folderDialog.ShowDialog() == DialogResult.OK)
+            {
+                string destinationPath = folderDialog.SelectedPath;
+                buttonDownloadAlbum.Enabled = false;
+
+                new System.Threading.Thread(() =>
+                {
+                    try
+                    {
+                        List<Photo> photosToDownload = new List<Photo>();
+                        foreach (Photo photo in selectedAlbum.Photos)
+                        {
+                            photosToDownload.Add(photo);
+                        }
+
+                        m_PhotoArchiver.DownloadPhotos(photosToDownload, destinationPath);
+
+                        this.Invoke(new Action(() =>
+                        {
+                            MessageBox.Show("Album downloaded successfully!");
+                        }));
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: " + ex.Message);
+                    }
+                    finally
+                    {
+                        buttonDownloadAlbum.Invoke(new Action(() =>
+                        {
+                            buttonDownloadAlbum.Enabled = true;
+                        }));
+                    }
+                }).Start();
+            }
+        }
+
+        private void buttonMoveToArchive_Click(object sender, EventArgs e)
+        {
+            if (m_PhotoArchiver == null)
+            {
+                return;
+            }
+
+            int yearsToArchive = (int)numericUpDownYears.Value;
+            List<Photo> oldPhotos = m_PhotoArchiver.GetPhotosOlderThan(yearsToArchive);
+
+            if (oldPhotos.Count == 0)
+            {
+                MessageBox.Show("Did not find any photos older than " + yearsToArchive + " years.");
+                return;
+            }
+
+            FolderBrowserDialog folderDialog = new FolderBrowserDialog();
+
+            if (folderDialog.ShowDialog() == DialogResult.OK)
+            {
+                string destinationPath = folderDialog.SelectedPath;
+                buttonMoveToArchive.Enabled = false;
+
+                new System.Threading.Thread(() =>
+                {
+                    try
+                    {
+                        m_PhotoArchiver.DownloadPhotos(oldPhotos, destinationPath);
+
+                        this.Invoke(new Action(() =>
+                        {
+                            MessageBox.Show("Finished archiving " + oldPhotos.Count + " photos!");
+                        }));
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: " + ex.Message);
+                    }
+                    finally
+                    {
+                        buttonMoveToArchive.Invoke(new Action(() =>
+                        {
+                            buttonMoveToArchive.Enabled = true;
+                        }));
+                    }
+                }).Start();
             }
         }
     }

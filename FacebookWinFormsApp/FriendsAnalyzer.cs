@@ -122,7 +122,7 @@ namespace BasicFacebookFeatures
             return inactiveGhostFriends;
         }
 
-        public List<User> GetActiveFriends(int i_friendsAmount)
+        public List<User> GetActiveFriends(int i_FriendsAmount)
         {
             if (!m_IsAnalyzed)
             {
@@ -134,7 +134,7 @@ namespace BasicFacebookFeatures
 
             List<User> topActiveFriends = new List<User>();
 
-            for (int i = 0; i < i_friendsAmount && i< friendsPointList.Count; i++)
+            for (int i = 0; i < i_FriendsAmount && i< friendsPointList.Count; i++)
             {
                 topActiveFriends.Add(friendsPointList[i].Key);
             }
