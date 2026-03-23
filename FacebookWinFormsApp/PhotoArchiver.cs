@@ -9,7 +9,6 @@ namespace BasicFacebookFeatures
     public class PhotoArchiver
     {
         private readonly User r_LoggedInUser;
-
         public event Action<int, int> ProgressChanged;
 
         public PhotoArchiver(User i_LoggedInUser)
@@ -44,9 +43,8 @@ namespace BasicFacebookFeatures
             {
                 foreach (Photo photo in i_Photos)
                 {
-                    //string photoUrl = photo.PictureURL;
-                    string photoUrl = photo.PictureNormalURL; // fixed
-                    string fileName = string.Format("{0}_{1}.jpg", photo.Id, photo.CreatedTime.Value.ToString("yyyyMMdd_HHmmss")); //i added the word Value
+                    string photoUrl = photo.PictureNormalURL;
+                    string fileName = string.Format("{0}_{1}.jpg", photo.Id, photo.CreatedTime.Value.ToString("yyyyMMdd_HHmmss"));
                     string fullPath = Path.Combine(i_DestinationPath, fileName);
                     
                     try

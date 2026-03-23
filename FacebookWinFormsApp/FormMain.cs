@@ -23,6 +23,7 @@ namespace BasicFacebookFeatures
         FacebookWrapper.LoginResult m_LoginResult;
 
         private FriendsAnalyzer m_friendAnalyzer;
+        private PhotoArchiver m_PhotoArchiver;
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
@@ -70,6 +71,9 @@ namespace BasicFacebookFeatures
         private void afterLogin()
         {
             m_LoggedInUser = m_LoginResult.LoggedInUser;
+            
+            m_PhotoArchiver = new PhotoArchiver(m_LoggedInUser);
+            m_PhotoArchiver.ProgressChanged += M_PhotoArchiver_ProgressChanged;
 
             buttonLogin.Text = $"Logged in as {m_LoginResult.LoggedInUser.Name}";
             buttonLogin.BackColor = Color.LightGreen;
@@ -214,6 +218,38 @@ namespace BasicFacebookFeatures
                 else
                 {
                     pictureBoxFriend.Image = null;
+                }
+            }
+        }
+
+        private void buttonLoadAlbums_Click(object sender, EventArgs e)
+        {
+            if (m_LoggedInUser == null)
+            {
+                MessageBox.Show("Please login first.");
+                return;
+            }
+
+            listBoxAlbums.Items.Clear();
+            listBoxAlbums.DisplayMember = "Name";
+
+            foreach (Album album in m_LoggedInUser.Albums)
+            {
+                listBoxAlbums.Items.Add(album);
+            }
+        }
+
+        private void listBoxAlbums_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBoxAlbums.SelectedItem is Album selectedAlbum)
+            {
+                if (selectedAlbum.PictureAlbumURL != null)
+                {
+                    pictureBoxAlbumCover.LoadAsync(selectedAlbum.PictureAlbumURL);
+                }
+                else
+                {
+                    pictureBoxAlbumCover.Image = null;
                 }
             }
         }
