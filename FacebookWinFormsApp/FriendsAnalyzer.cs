@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using FacebookWrapper.ObjectModel;
 using System;
+using System.Collections.Generic;
+using FacebookWrapper.ObjectModel;
+
 namespace BasicFacebookFeatures
 {
 	class FriendsAnalyzer
@@ -8,21 +9,33 @@ namespace BasicFacebookFeatures
 		private readonly User r_LoggedInUser;
 		private Dictionary<User, int> m_FriendsPoints;
 		private bool m_IsAnalyzed;
+		private List<DummyFriend> m_DummyActiveFriends;
+		private List<DummyFriend> m_DummyGhostFriends;
 
 		public bool UsingDummyData { get; private set; } = false;
+
+		public bool HasRealFriends
+		{
+			get
+			{
+				return m_FriendsPoints.Count > 0;
+			}
+		}
 
 		public FriendsAnalyzer(User i_LoggedInUser)
 		{
 			this.r_LoggedInUser = i_LoggedInUser;
 			m_FriendsPoints = new Dictionary<User, int>();
 			m_IsAnalyzed = false;
+			m_DummyActiveFriends = new List<DummyFriend>();
+			m_DummyGhostFriends = new List<DummyFriend>();
 
 			initializeFriendsPointDictionary();
 		}
 
 		public bool IsAnalyzed
 		{
-			get 
+			get
 			{
 				return m_IsAnalyzed;
 			}
@@ -31,7 +44,10 @@ namespace BasicFacebookFeatures
 		public void ResetAnalyzer()
 		{
 			m_IsAnalyzed = false;
+			UsingDummyData = false;
 			m_FriendsPoints.Clear();
+			m_DummyActiveFriends.Clear();
+			m_DummyGhostFriends.Clear();
 			initializeFriendsPointDictionary();
 		}
 
@@ -50,23 +66,40 @@ namespace BasicFacebookFeatures
 		{
 			if (m_IsAnalyzed)
 			{
-				return; 
+				return;
 			}
 
-			if (r_LoggedInUser.Posts != null)
+			try
 			{
-				calculateFriendsInteractions(r_LoggedInUser.Posts);
-			}
-
-			if (r_LoggedInUser.Albums != null)
-			{
-				foreach (Album photoAlbum in r_LoggedInUser.Albums)
+				if (r_LoggedInUser.Posts != null)
 				{
-					if (photoAlbum.Photos != null)
+					calculateFriendsInteractions(r_LoggedInUser.Posts);
+				}
+
+				if (r_LoggedInUser.Albums != null)
+				{
+					foreach (Album photoAlbum in r_LoggedInUser.Albums)
 					{
-						calculateFriendsInteractions(photoAlbum.Photos);
+						if (photoAlbum.Photos != null)
+						{
+							calculateFriendsInteractions(photoAlbum.Photos);
+						}
 					}
 				}
+			}
+			catch (Exception)
+			{
+				if (!UsingDummyData)
+				{
+					UsingDummyData = true;
+					injectDummyData();
+				}
+			}
+
+			if (m_FriendsPoints.Count == 0 && !UsingDummyData)
+			{
+				UsingDummyData = true;
+				injectDummyData();
 			}
 
 			m_IsAnalyzed = true;
@@ -104,17 +137,17 @@ namespace BasicFacebookFeatures
 					}
 				}
 				catch (Exception)
-                {
+				{
 					apiBlocked = true;
 					break;
-                }
+				}
 			}
 
 			if (apiBlocked && !UsingDummyData)
-            {
+			{
 				UsingDummyData = true;
 				injectDummyData();
-            }
+			}
 		}
 
 		public List<User> GetGhostFriends()
@@ -125,7 +158,7 @@ namespace BasicFacebookFeatures
 			}
 
 			List<User> inactiveGhostFriends = new List<User>();
-			
+
 			foreach (KeyValuePair<User, int> friend in m_FriendsPoints)
 			{
 				if (friend.Value == 0)
@@ -137,6 +170,16 @@ namespace BasicFacebookFeatures
 			return inactiveGhostFriends;
 		}
 
+		public List<DummyFriend> GetDummyGhostFriends()
+		{
+			if (!m_IsAnalyzed)
+			{
+				AnalyzeInteractions();
+			}
+
+			return m_DummyGhostFriends;
+		}
+
 		public List<User> GetActiveFriends(int i_FriendsAmount)
 		{
 			if (!m_IsAnalyzed)
@@ -145,7 +188,10 @@ namespace BasicFacebookFeatures
 			}
 
 			List<KeyValuePair<User, int>> friendsPointList = new List<KeyValuePair<User, int>>(m_FriendsPoints);
-			friendsPointList.Sort((firstFriend, secondFriend) => secondFriend.Value.CompareTo(firstFriend.Value));
+			friendsPointList.Sort(delegate(KeyValuePair<User, int> firstFriend, KeyValuePair<User, int> secondFriend)
+			{
+				return secondFriend.Value.CompareTo(firstFriend.Value);
+			});
 
 			List<User> topActiveFriends = new List<User>();
 
@@ -157,16 +203,98 @@ namespace BasicFacebookFeatures
 			return topActiveFriends;
 		}
 
+		public List<DummyFriend> GetDummyActiveFriends(int i_FriendsAmount)
+		{
+			if (!m_IsAnalyzed)
+			{
+				AnalyzeInteractions();
+			}
+
+			List<DummyFriend> result = new List<DummyFriend>();
+			int count = Math.Min(i_FriendsAmount, m_DummyActiveFriends.Count);
+
+			for (int i = 0; i < count; i++)
+			{
+				result.Add(m_DummyActiveFriends[i]);
+			}
+
+			return result;
+		}
+
 		private void injectDummyData()
 		{
 			Random random = new Random();
-			List<User> friendsList = new List<User>(m_FriendsPoints.Keys);
 
-			foreach (User friend in friendsList)
+			if (m_FriendsPoints.Count > 0)
 			{
-				if (random.Next(1, 100) > 30)
+				List<User> friendsList = new List<User>(m_FriendsPoints.Keys);
+
+				foreach (User friend in friendsList)
 				{
-					m_FriendsPoints[friend] += random.Next(1, 50);
+					if (random.Next(1, 100) > 30)
+					{
+						m_FriendsPoints[friend] += random.Next(1, 50);
+					}
+				}
+			}
+			else
+			{
+				generateDummyFriends(random);
+			}
+		}
+
+		private void generateDummyFriends(Random i_Random)
+		{
+			string[] activeNames = new string[]
+			{
+				"Yael Cohen", "Omer Levi", "Noa Mizrahi", "Itai Peretz",
+				"Shira Friedman", "Alon Katz", "Maya Goldberg", "Eitan Shapira",
+				"Tal Avraham", "Lior Rosenberg", "Dana Ben-David", "Noam Golan",
+				"Roni Schwartz", "Ori Blum", "Hila Stern", "Yonatan Klein",
+				"Inbar Levy", "Ido Bar", "Tamar Wolf", "Rotem Fischer",
+				"Amit Dahan", "Gal Hadid", "Yarin Azulay", "Sapir Ohana",
+				"Ofir Ben-Ami", "Tomer Malka", "Noy Elbaz", "Yuval Shaked",
+				"Matan Zohar", "Keren Nahmias"
+			};
+
+			string[] ghostNames = new string[]
+			{
+				"David Silberstein", "Rachel Gutman", "Moshe Abramov",
+				"Sivan Harari", "Elad Pinto", "Michal Yosef",
+				"Benny Tsarfati", "Liora Ashkenazi", "Nadav Bitton",
+				"Ayelet Rosen", "Gil Hasson", "Efrat Koren"
+			};
+
+			List<KeyValuePair<string, int>> activeFriendScores = new List<KeyValuePair<string, int>>();
+
+			foreach (string name in activeNames)
+			{
+				int score = i_Random.Next(5, 80);
+				activeFriendScores.Add(new KeyValuePair<string, int>(name, score));
+			}
+
+			foreach (string name in ghostNames)
+			{
+				activeFriendScores.Add(new KeyValuePair<string, int>(name, 0));
+			}
+
+			activeFriendScores.Sort(delegate(KeyValuePair<string, int> first, KeyValuePair<string, int> second)
+			{
+				return second.Value.CompareTo(first.Value);
+			});
+
+			m_DummyActiveFriends.Clear();
+			m_DummyGhostFriends.Clear();
+
+			foreach (KeyValuePair<string, int> friendScore in activeFriendScores)
+			{
+				if (friendScore.Value == 0)
+				{
+					m_DummyGhostFriends.Add(new DummyFriend(friendScore.Key, friendScore.Value));
+				}
+				else
+				{
+					m_DummyActiveFriends.Add(new DummyFriend(friendScore.Key, friendScore.Value));
 				}
 			}
 		}

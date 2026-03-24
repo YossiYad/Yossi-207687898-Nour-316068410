@@ -68,7 +68,10 @@ namespace BasicFacebookFeatures
 
 		protected virtual void OnProgressChanged(int i_Current, int i_Total)
 		{
-			ProgressChanged?.Invoke(i_Current, i_Total);
+			if (ProgressChanged != null)
+			{
+				ProgressChanged.Invoke(i_Current, i_Total);
+			}
 		}
 	}
 }
