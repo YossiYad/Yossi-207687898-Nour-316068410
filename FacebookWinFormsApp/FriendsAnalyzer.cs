@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using FacebookWrapper.ObjectModel;
-
+using System;
 namespace BasicFacebookFeatures
 {
 	class FriendsAnalyzer
@@ -8,6 +8,8 @@ namespace BasicFacebookFeatures
 		private readonly User r_LoggedInUser;
 		private Dictionary<User, int> m_FriendsPoints;
 		private bool m_IsAnalyzed;
+
+		public bool UsingDummyData { get; private set; } = false;
 
 		public FriendsAnalyzer(User i_LoggedInUser)
 		{
@@ -72,31 +74,47 @@ namespace BasicFacebookFeatures
 
 		private void calculateFriendsInteractions(IEnumerable<PostedItem> i_ItemsToScan)
 		{
+			bool apiBlocked = false;
+
 			foreach (PostedItem postedItem in i_ItemsToScan)
 			{
-				if (postedItem.LikedBy != null)
+				try
 				{
-					foreach (User likerUser in postedItem.LikedBy)
+					if (postedItem.LikedBy != null)
 					{
-						if (m_FriendsPoints.ContainsKey(likerUser))
+						foreach (User likerUser in postedItem.LikedBy)
 						{
-							m_FriendsPoints[likerUser] += 1;
+							if (m_FriendsPoints.ContainsKey(likerUser))
+							{
+								m_FriendsPoints[likerUser] += 1;
+							}
 						}
 					}
-				}
 
-				if (postedItem.Comments != null)
-				{
-					foreach (Comment comment in postedItem.Comments)
+					if (postedItem.Comments != null)
 					{
-						User commentUser = comment.From;
-						if (commentUser != null && m_FriendsPoints.ContainsKey(commentUser))
+						foreach (Comment comment in postedItem.Comments)
 						{
-							m_FriendsPoints[commentUser] += 1;
+							User commentUser = comment.From;
+							if (commentUser != null && m_FriendsPoints.ContainsKey(commentUser))
+							{
+								m_FriendsPoints[commentUser] += 1;
+							}
 						}
 					}
 				}
+				catch (Exception)
+                {
+					apiBlocked = true;
+					break;
+                }
 			}
+
+			if (apiBlocked && !UsingDummyData)
+            {
+				UsingDummyData = true;
+				injectDummyData();
+            }
 		}
 
 		public List<User> GetGhostFriends()
@@ -137,6 +155,20 @@ namespace BasicFacebookFeatures
 			}
 
 			return topActiveFriends;
+		}
+
+		private void injectDummyData()
+		{
+			Random random = new Random();
+			List<User> friendsList = new List<User>(m_FriendsPoints.Keys);
+
+			foreach (User friend in friendsList)
+			{
+				if (random.Next(1, 100) > 30)
+				{
+					m_FriendsPoints[friend] += random.Next(1, 50);
+				}
+			}
 		}
 	}
 }

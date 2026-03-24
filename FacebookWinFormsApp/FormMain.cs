@@ -125,6 +125,14 @@ namespace BasicFacebookFeatures
                 {
                     List<User> topActiveFriends = m_friendAnalyzer.GetActiveFriends(10);
 
+                    if (m_friendAnalyzer.UsingDummyData)
+                    {
+                        this.Invoke(new Action(() =>
+                        {
+                            MessageBox.Show("The Facebook API currently restricts access to likes and comments.\nDisplaying generated Dummy Data for demonstration purposes as per instructions.",
+                                            "API Limitation", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }));
+                    }
                     listBoxFriends.Invoke(new Action(() =>
                     {
                         listBoxFriends.DisplayMember = "Name";
