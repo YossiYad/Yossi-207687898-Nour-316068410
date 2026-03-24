@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \":*)",
+      "Bash(node -e \":*)",
+      "Bash(node -e \"const fs=require\\(''fs''\\); const d=fs.readFileSync\\(''C:/Users/YossiYadgar/source/repos/Yossi-207687898-Nour-316068410/FacebookWinFormsApp/PhotoArchiver.cs'',''utf8''\\); const lines=d.split\\(''\\\\n''\\); let t=0,s=0; lines.forEach\\(l=>{if\\(l.startsWith\\(''\\\\t''\\)\\)t++;if\\(l.startsWith\\(''    ''\\)\\)s++;}\\); console.log\\(''Tabs:'',t,''Spaces:'',s\\);\")"
+    ]
+  }
+}
